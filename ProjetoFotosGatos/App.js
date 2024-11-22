@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button, ScrollView, Image } from 'react-native';
+import { FlatList, Image, Button, View, StyleSheet } from 'react-native';
 
 export default function App() {
+  const [data, setData] = useState([]);
 
   const obterFotosGatos = async () => {
     try {
@@ -16,17 +16,36 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text>Fotos de Gatos</Text>
-      <Button title="Carregar 5 fotos de gatos" onPress={obterFotosGatos}/>
+      <FlatList data={data} keyExtractor={(item, index) => index.toString()} renderItem={({ item }) => (
+          <View style={styles.imageContainer}>
+            <Image
+              source={{ uri: item.url }}
+              style={styles.image}
+            />
+          </View>
+        )}
+      />
+      <Button title="Carregar 5 fotos de gatos" onPress={obterFotosGatos} />
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    padding: 10,
+    padding: 16,
+  },
+  imageContainer: {
+    marginBottom: 16,
+    alignItems: 'center',
+  },
+  image: {
+    width: 300,
+    height: 200,
+    borderRadius: 10,
   },
 });
+
+
 
